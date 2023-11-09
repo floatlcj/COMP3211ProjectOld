@@ -1,24 +1,24 @@
 package Model;
 
 public class Note extends PIR{
-    protected String name;
+    protected String identifier;
     protected String text;
 
     Note(String name, String text){
-        this.name = name;
+        this.identifier = name;
         this.text = text;
     }
 
-    public String getName() {
-        return name;
+    public String getIdentifier() {
+        return identifier;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public void setText(String text) {

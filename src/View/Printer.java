@@ -1,5 +1,6 @@
 package View;
 
+import Model.Contact;
 import Model.Note;
 import Model.PIR;
 import Model.pirVisitor;
@@ -19,8 +20,17 @@ public class Printer implements pirVisitor {
 
     @Override
     public Void visitNote(Note note) {
-        System.out.println("Note:" + note.getName());
+        System.out.println("Note:" + note.getIdentifier());
         System.out.println(note.getText());
+        return null;
+    }
+
+    @Override
+    public Void visitContact(Contact contact) {
+        System.out.println("Contact: " + contact.getIdentifier());
+        System.out.println("Name: " + contact.getName());
+        System.out.println("Address: " + contact.getAddress());
+        System.out.println("Mobile number: " + contact.getMobile());
         return null;
     }
 }

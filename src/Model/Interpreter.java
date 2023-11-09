@@ -17,13 +17,20 @@ public class Interpreter implements Visitor {
     }
     @Override
     public Void visitCreateStmt(CreateStmt stmt) {
-        String name = stmt.getName();
+        String identifier = stmt.getIdentifier();
         Token dataType = stmt.getDataType();
         switch (dataType.type){
             case NOTE:
                 try {
-                    createNote(name);
+                    createNote(identifier);
                 } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case CONTACT:
+                try {
+                    createContact(identifier);
+                }catch (IOException e){
                     throw new RuntimeException(e);
                 }
                 break;
@@ -47,16 +54,26 @@ public class Interpreter implements Visitor {
         return null;
     }
 
-    private void createNote(String name)throws IOException{
-        String text = readLine("Input your text:");
-        Note note = new Note(name, text);
-        PIRs.put(name, note);
+    private void createNote(String identifier)throws IOException{
+        String text = readLine("Input your text:", true);
+        Note note = new Note(identifier, text);
+        PIRs.put(identifier, note);
     }
 
-    private String readLine(String message)throws IOException {
+    private void createContact(String identifier)throws IOException{
+        String name = readLine("Name: ",false);
+        String address = readLine("Address: ", false);
+        String mobile = readLine("Mobile number: ", false);
+        Contact contact = new Contact(identifier, name, address,mobile);
+        PIRs.put(identifier, contact);
+    }
+
+    private String readLine(String message, boolean newLine)throws IOException {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in));
-        System.out.println(message);
+        if (newLine)
+            System.out.println(message);
+        else System.out.print(message);
         String res = reader.readLine();
         return res;
     }

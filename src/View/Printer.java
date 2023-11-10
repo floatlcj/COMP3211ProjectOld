@@ -7,6 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class Printer implements pirVisitor {
+
+    private static final String FORMAT = "yyyy-MM-dd,HH:mm";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(FORMAT);
     private HashMap<String, PIR>  PIRs;
     public Printer(HashMap<String, PIR> PIRs){
         this.PIRs = PIRs;
@@ -18,12 +21,22 @@ public class Printer implements pirVisitor {
     }
 
     @Override
+    public Void visitSchedule(Schedule schedule) {
+        System.out.println("Schedule: " + schedule.getIdentifier());
+        System.out.println("Description: " + schedule.getDescription());
+        LocalDateTime startTime = schedule.getStartTime();
+        LocalDateTime alarmTime = schedule.getAlarmTime();
+        System.out.println("Start time: " + startTime.format(FORMATTER));
+        System.out.println("Alarm time: " + alarmTime.format(FORMATTER));
+        return null;
+    }
+
+    @Override
     public Void visitTask(Task task) {
         System.out.println("Task: " + task.getIdentifier());
         System.out.println("Description: " + task.getDescription());
         LocalDateTime deadline = task.getDeadline();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
-        String deadlineStr = deadline.format(formatter);
+        String deadlineStr = deadline.format(FORMATTER);
         System.out.println("Deadline: " + deadlineStr);
         return null;
     }

@@ -43,6 +43,13 @@ public class Interpreter implements Visitor {
                     throw new RuntimeException(e);
                 }
                 break;
+            case SCHEDULE:
+                try {
+                    createSchedule(identifier);
+                }catch (IOException e){
+                    throw new RuntimeException(e);
+                }
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + dataType.type);
         }
@@ -61,6 +68,20 @@ public class Interpreter implements Visitor {
     public Void visitExitStmt(ExitStmt stmt) {
         System.exit(64);
         return null;
+    }
+
+    private void createSchedule(String identifier)throws IOException{
+        String description = readLine("Description: ", true);
+        String startTimeStr = readLine("Start time: ", false);
+        Scanner scanner = new Scanner(startTimeStr);
+        List<Token> tokens = scanner.scanTokens();
+        LocalDateTime startTime = (LocalDateTime) tokens.get(0).literal;
+        String alarmTimeStr = readLine("Alarm time: ", false);
+        scanner = new Scanner(alarmTimeStr);
+        tokens = scanner.scanTokens();
+        LocalDateTime alarmTime = (LocalDateTime) tokens.get(0).literal;
+        Schedule schedule = new Schedule(identifier, description, startTime, alarmTime);
+        PIRs.put(identifier, schedule);
     }
 
     private void createNote(String identifier)throws IOException{

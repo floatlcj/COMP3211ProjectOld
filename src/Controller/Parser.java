@@ -49,16 +49,18 @@ public class Parser {
         throw error(message);
     }
 
-    private ScannerError error(String message){
+    private PIMError error(String message){
         haveParseError = true;
-        return new ScannerError(message);
+        return new PIMError(message);
     }
 
     public Stmt parse(){
         if (match(TokenType.CREATE)) return crateStmt();
         if (match(TokenType.PRINT)) return printStmt();
         if (match(TokenType.EXIT)) return exitStmt();
-        throw error("Commands: create");
+        throw error("Commands: create\n" +
+                "          print\n" +
+                "          exit");
     }
 
     public  Stmt exitStmt(){

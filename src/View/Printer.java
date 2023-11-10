@@ -1,5 +1,6 @@
 package View;
 
+import Controller.PIMError;
 import Model.*;
 
 import java.time.LocalDateTime;
@@ -15,8 +16,9 @@ public class Printer implements pirVisitor {
         this.PIRs = PIRs;
     }
 
-    public void print(String name){
-        PIR pir = PIRs.get(name);
+    public void print(String identifier){
+        PIR pir = PIRs.get(identifier);
+        if (pir == null) throw new PIMError("PIR \""+ identifier +"\" does not exist.");
         pir.accept(this);
     }
 

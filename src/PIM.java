@@ -1,6 +1,6 @@
 import Controller.Parser;
 import Controller.Scanner;
-import Controller.ScannerError;
+import Controller.PIMError;
 import Controller.Token;
 import Controller.Stmt;
 import Model.Interpreter;
@@ -44,7 +44,7 @@ public class PIM {
 
 //            for (Token token: tokens)
 //                System.out.println(token);
-        }catch (ScannerError error){
+        }catch (PIMError error){
             haveError = false;
         }
 

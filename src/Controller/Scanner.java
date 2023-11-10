@@ -141,13 +141,13 @@ public class Scanner {
                     try {
                         date();
                     }catch (DateTimeParseException e){
-                        throw new ScannerError("Unsupported date-time format. (yyyy-MM-dd,HH:mm)");
+                        throw new PIMError("Unsupported date-time format. (yyyy-MM-dd,HH:mm)");
                     }
                 else if (isAlpha(c))
                     identifier();
                 else{
                     haveError = true;
-                    throw new ScannerError("Unexpected Character");
+                    throw new PIMError("Unexpected Character");
                 }
         }
     }

@@ -1,4 +1,7 @@
 package Controller;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +77,11 @@ public class Scanner {
         return c >= '0' && c <= '9';
     }
 
+    private boolean isDate(char c) {
+        if (isDigit(c)) return true;
+        else return c == '-' || c == ':' || c == ' ';
+    }
+
     private boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') ||
                 (c >= 'A' && c <= 'Z') ||
@@ -90,6 +98,14 @@ public class Scanner {
         TokenType type = keywords.get(text);
         if (type == null) type = TokenType.IDENTIFIER;
         addToken(type);
+    }
+
+    private void date()throws DateTimeParseException {
+        while(isDate(peek())) advance();
+        String dateStr = source.substring(start, current);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime date = LocalDateTime.parse(dateStr, formatter);
+        addToken(TokenType.DATE, date);
     }
 
     private void scanToken(){
@@ -121,7 +137,13 @@ public class Scanner {
             case '\t':
                 break;
             default:
-                if (isAlpha(c))
+                if (isDate(c))
+                    try {
+                        date();
+                    }catch (DateTimeParseException e){
+                        throw new ScannerError("Unsupported date-time format. (yyyy-MM-dd HH:mm)");
+                    }
+                else if (isAlpha(c))
                     identifier();
                 else{
                     haveError = true;

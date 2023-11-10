@@ -79,7 +79,7 @@ public class Scanner {
 
     private boolean isDate(char c) {
         if (isDigit(c)) return true;
-        else return c == '-' || c == ':' || c == ' ';
+        else return c == '-' || c == ':' || c == ',';
     }
 
     private boolean isAlpha(char c) {
@@ -103,7 +103,7 @@ public class Scanner {
     private void date()throws DateTimeParseException {
         while(isDate(peek())) advance();
         String dateStr = source.substring(start, current);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
         LocalDateTime date = LocalDateTime.parse(dateStr, formatter);
         addToken(TokenType.DATE, date);
     }
@@ -141,7 +141,7 @@ public class Scanner {
                     try {
                         date();
                     }catch (DateTimeParseException e){
-                        throw new ScannerError("Unsupported date-time format. (yyyy-MM-dd HH:mm)");
+                        throw new ScannerError("Unsupported date-time format. (yyyy-MM-dd,HH:mm)");
                     }
                 else if (isAlpha(c))
                     identifier();

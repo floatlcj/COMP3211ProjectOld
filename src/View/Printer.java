@@ -22,7 +22,7 @@ public class Printer implements pirVisitor {
         System.out.println("Task: " + task.getIdentifier());
         System.out.println("Description: " + task.getDescription());
         LocalDateTime deadline = task.getDeadline();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
         String deadlineStr = deadline.format(formatter);
         System.out.println("Deadline: " + deadlineStr);
         return null;

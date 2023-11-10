@@ -20,6 +20,8 @@ public class Interpreter implements Visitor {
     @Override
     public Void visitCreateStmt(CreateStmt stmt) {
         String identifier = stmt.getIdentifier();
+        if (PIRs.containsKey(identifier))
+            throw new PIMError("PIR with identifier \"" + identifier + "\" already exists.");
         Token dataType = stmt.getDataType();
         switch (dataType.type){
             case NOTE:

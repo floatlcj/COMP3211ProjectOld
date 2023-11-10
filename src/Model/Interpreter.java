@@ -6,7 +6,9 @@ import View.Printer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 public class Interpreter implements Visitor {
     private HashMap<String, PIR> PIRs = new HashMap<>();
@@ -30,6 +32,13 @@ public class Interpreter implements Visitor {
             case CONTACT:
                 try {
                     createContact(identifier);
+                }catch (IOException e){
+                    throw new RuntimeException(e);
+                }
+                break;
+            case TASK:
+                try {
+                    createTask(identifier);
                 }catch (IOException e){
                     throw new RuntimeException(e);
                 }
@@ -58,6 +67,17 @@ public class Interpreter implements Visitor {
         String text = readLine("Input your text:", true);
         Note note = new Note(identifier, text);
         PIRs.put(identifier, note);
+    }
+
+    private void createTask(String identifier)throws IOException{
+        String description = readLine("Description: ", true);
+        String deadlineStr = readLine("Deadline: ", false);
+        Scanner scanner = new Scanner(deadlineStr);
+        List<Token> tokens = scanner.scanTokens();
+        LocalDateTime deadline = (LocalDateTime) tokens.get(0).literal;
+        Task task = new Task(identifier, description, deadline);
+        PIRs.put(identifier, task);
+
     }
 
     private void createContact(String identifier)throws IOException{

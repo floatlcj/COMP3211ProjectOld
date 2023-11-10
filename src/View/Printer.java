@@ -1,10 +1,9 @@
 package View;
 
-import Model.Contact;
-import Model.Note;
-import Model.PIR;
-import Model.pirVisitor;
+import Model.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 public class Printer implements pirVisitor {
@@ -16,6 +15,17 @@ public class Printer implements pirVisitor {
     public void print(String name){
         PIR pir = PIRs.get(name);
         pir.accept(this);
+    }
+
+    @Override
+    public Void visitTask(Task task) {
+        System.out.println("Task: " + task.getIdentifier());
+        System.out.println("Description: " + task.getDescription());
+        LocalDateTime deadline = task.getDeadline();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String deadlineStr = deadline.format(formatter);
+        System.out.println("Deadline: " + deadlineStr);
+        return null;
     }
 
     @Override

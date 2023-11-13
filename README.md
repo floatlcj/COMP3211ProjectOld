@@ -1,11 +1,11 @@
 # Personal Information Manager
-*Usage:*
+**Usage:**
 
-create {Note, Task, Schedule, Contact} {identifier}  
+create {*Note*, *Task*, *Schedule*, *Contact*} *identifier*  
 &nbsp;&nbsp;&nbsp;&nbsp;An identifier should start with a letter or '_'. It should not be any of the reserved keywords.  
 &nbsp;&nbsp;&nbsp;&nbsp;Datetime format: "yyyy-MM-dd,HH:mm"  
   
-print {identifier}  
+print *identifier*  
 &nbsp;&nbsp;&nbsp;&nbsp;'*' == all  
 
 exit  

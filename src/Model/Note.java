@@ -1,11 +1,13 @@
 package Model;
 
-public class Note extends PIR{
-    protected String identifier;
-    protected String text;
+import java.io.Serializable;
 
-    Note(String name, String text){
-        this.identifier = name;
+public class Note extends PIR implements Serializable {
+    private String identifier;
+    private String text;
+
+    public Note(String identifier, String text){
+        this.identifier = identifier;
         this.text = text;
     }
 
@@ -28,5 +30,10 @@ public class Note extends PIR{
     @Override
     public <T> T accept(pirVisitor<T> visitor) {
         return visitor.visitNote(this);
+    }
+
+    public String toString(){
+        String noteStr = identifier + "\n" + text;
+        return noteStr;
     }
 }

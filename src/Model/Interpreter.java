@@ -3,9 +3,7 @@ package Model;
 import Controller.*;
 import View.Printer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +68,51 @@ public class Interpreter implements Visitor {
     public Void visitExitStmt(ExitStmt stmt) {
         System.exit(64);
         return null;
+    }
+
+    @Override
+    public Void visitLoadStmt(LoadStmt stmt){
+        try {
+            load();
+            System.out.println("Loaded.");
+        }catch (FileNotFoundException e){
+            throw new PIMError("Invalid file name.");
+        }catch (IOException | ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visitSaveStmt(SaveStmt stmt){
+        try {
+            save();
+            System.out.println("Saved.");
+        }catch (FileNotFoundException e){
+            throw new PIMError("Invalid path name.");
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    private void load() throws IOException, ClassNotFoundException{
+        String filePath = readLine("File path: ", false);
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        PIRs = (HashMap<String, PIR>) objectInputStream.readObject();
+        objectInputStream.close();
+        fileInputStream.close();
+    }
+
+    private void save() throws IOException{
+        String filePath = readLine("File path: ", false);
+        filePath = filePath + ".pim";
+        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(PIRs);
+        objectOutputStream.close();
+        fileOutputStream.close();
     }
 
     private void createSchedule(String identifier)throws IOException{

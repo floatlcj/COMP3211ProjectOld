@@ -1,5 +1,7 @@
 package Model;
 
-public abstract class PIR {
+import java.io.Serializable;
+
+public abstract class PIR implements Serializable {
     public abstract <T> T accept(pirVisitor<T> visitor);
 }

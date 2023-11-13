@@ -1,6 +1,8 @@
 package Model;
 
-public class Contact extends PIR{
+import java.io.Serializable;
+
+public class Contact extends PIR implements Serializable {
     private String identifier;
     private String name;
     private String address;
@@ -30,5 +32,27 @@ public class Contact extends PIR{
 
     public String getMobile() {
         return mobile;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    @Override
+    public String toString() {
+        String contactStr = identifier + "\n" + name + "\n" + address + "\n" + mobile;
+        return contactStr;
     }
 }

@@ -1,12 +1,15 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Schedule extends PIR{
+public class Schedule extends PIR implements Serializable {
     private String identifier;
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime alarmTime;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
 
     public Schedule(String identifier, String description, LocalDateTime startTime, LocalDateTime alarmTime){
         this.identifier = identifier;
@@ -36,5 +39,12 @@ public class Schedule extends PIR{
 
     public LocalDateTime getAlarmTime() {
         return alarmTime;
+    }
+
+    @Override
+    public String toString() {
+        String scheduleStr = identifier + "\n" + description + "\n" + startTime.format(formatter) + "\n"
+                + alarmTime.format(formatter);
+        return scheduleStr;
     }
 }

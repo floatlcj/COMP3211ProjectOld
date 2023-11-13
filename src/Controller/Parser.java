@@ -64,16 +64,23 @@ public class Parser {
         if (match(TokenType.CREATE)) return crateStmt();
         if (match(TokenType.PRINT)) return printStmt();
         if (match(TokenType.EXIT)) return exitStmt();
+        if (match(TokenType.SAVE)) return saveStmt();
+        if (match(TokenType.LOAD)) return loadStmt();
         throw error("Commands: create\n" +
                 "          print\n" +
-                "          exit");
+                "          exit\n" +
+                "          save\n" +
+                "          load");
     }
 
-    public  Stmt exitStmt(){
+    private Stmt loadStmt(){return new LoadStmt();}
+
+    private Stmt saveStmt(){return new SaveStmt();}
+    private Stmt exitStmt(){
         return new ExitStmt();
     }
 
-    public Stmt crateStmt(){
+    private Stmt crateStmt(){
         if (match(TokenType.NOTE) || match(TokenType.TASK) || match(TokenType.SCHEDULE) || match(TokenType.CONTACT)){
             Token dataType = previous();
             Token identifier = consume(TokenType.IDENTIFIER, "Expect an identifier for a PIR.");
@@ -81,7 +88,7 @@ public class Parser {
         }else throw error("create {Note, Task, Schedule, Contact}");
     }
 
-    public Stmt printStmt(){
+    private Stmt printStmt(){
         Token identifier = consume(TokenType.IDENTIFIER, TokenType.ALL, "Expect an identifier after print.");
         return new PrintStmt(identifier);
     }

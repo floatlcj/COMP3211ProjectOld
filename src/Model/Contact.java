@@ -14,10 +14,16 @@ public class Contact extends PIR implements Serializable {
         this.identifier = identifier;
     }
     @Override
-    public <T> T accept(pirVisitor<T> visitor) {
+    public <T> T accept(PrintVisitor<T> visitor) {
         return visitor.visitContact(this);
     }
 
+    @Override
+    public <T> T accept(ModifyVisitor<T> visitor) {
+        return visitor.visitContact(this);
+    }
+
+    @Override
     public String getIdentifier(){
         return identifier;
     }
@@ -25,6 +31,7 @@ public class Contact extends PIR implements Serializable {
     public String getName() {
         return name;
     }
+
 
     public String getAddress() {
         return address;
@@ -42,6 +49,7 @@ public class Contact extends PIR implements Serializable {
         this.address = address;
     }
 
+    @Override
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }

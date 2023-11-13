@@ -11,6 +11,7 @@ public class Note extends PIR implements Serializable {
         this.text = text;
     }
 
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -19,6 +20,7 @@ public class Note extends PIR implements Serializable {
         return text;
     }
 
+    @Override
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
@@ -28,7 +30,12 @@ public class Note extends PIR implements Serializable {
     }
 
     @Override
-    public <T> T accept(pirVisitor<T> visitor) {
+    public <T> T accept(PrintVisitor<T> visitor) {
+        return visitor.visitNote(this);
+    }
+
+    @Override
+    public <T> T accept(ModifyVisitor<T> visitor) {
         return visitor.visitNote(this);
     }
 

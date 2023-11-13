@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-public class Printer implements pirVisitor {
+public class Printer implements PrintVisitor {
 
     private static final String FORMAT = "yyyy-MM-dd,HH:mm";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(FORMAT);

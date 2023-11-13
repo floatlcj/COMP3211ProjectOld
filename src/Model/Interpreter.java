@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
-import java.util.List;
 
-public class Interpreter implements Visitor {
+public class Interpreter implements StmtVisitor {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
     private HashMap<String, PIR> PIRs = new HashMap<>();
     public Interpreter(){
@@ -18,6 +17,18 @@ public class Interpreter implements Visitor {
     public void interpret(Stmt stmt){
         stmt.accept(this);
     }
+
+    @Override
+    public Void visitModifyStmt(ModifyStmt stmt) {
+        String identifier = stmt.getIdentifier();
+        Modifier modifier = new Modifier(PIRs);
+        PIR pir = PIRs.get(identifier);
+        if (pir == null)
+            throw new PIMError("No such PIR found.");
+        modifier.modify(pir);
+        return null;
+    }
+
     @Override
     public Void visitCreateStmt(CreateStmt stmt) {
         String identifier = stmt.getIdentifier();

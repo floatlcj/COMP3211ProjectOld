@@ -66,11 +66,17 @@ public class Parser {
         if (match(TokenType.EXIT)) return exitStmt();
         if (match(TokenType.SAVE)) return saveStmt();
         if (match(TokenType.LOAD)) return loadStmt();
+        if (match(TokenType.MODIFY)) return modifyStmt();
         throw error("Commands: create\n" +
                 "          print\n" +
                 "          exit\n" +
                 "          save\n" +
                 "          load");
+    }
+
+    private Stmt modifyStmt(){
+        Token identifier = consume(TokenType.IDENTIFIER, "Expect and identifier after modify.");
+        return new ModifyStmt(identifier.lexeme);
     }
 
     private Stmt loadStmt(){return new LoadStmt();}

@@ -16,20 +16,35 @@ public class Task extends PIR implements Serializable {
         this.deadline = deadline;
     }
     @Override
-    public <T> T accept(pirVisitor<T> visitor) {
+    public <T> T accept(PrintVisitor<T> visitor) {
         return visitor.visitTask(this);
     }
 
+    @Override
+    public <T> T accept(ModifyVisitor<T> visitor) {
+        return visitor.visitTask(this);
+    }
+
+    @Override
     public String getIdentifier() {
         return identifier;
     }
+
+    @Override
+    public void setIdentifier(String identifier){this.identifier = identifier;}
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description){this.description = description;}
+
     public LocalDateTime getDeadline() {
         return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
     @Override

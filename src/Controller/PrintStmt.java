@@ -6,7 +6,7 @@ public class PrintStmt extends Stmt{
         this.identifier = identifier;
     }
     @Override
-    public <T> T accept(Visitor<T> visitor) {
-        return visitor.visitPrintStmt(this);
+    public <T> T accept(StmtVisitor<T> stmtVisitor) {
+        return stmtVisitor.visitPrintStmt(this);
     }
 }

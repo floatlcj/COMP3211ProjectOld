@@ -8,8 +8,8 @@ public class CreateStmt extends Stmt{
         this.dataType = dataType;
     }
     @Override
-    public <T> T accept(Visitor<T> visitor) {
-        return visitor.visitCreateStmt(this);
+    public <T> T accept(StmtVisitor<T> stmtVisitor) {
+        return stmtVisitor.visitCreateStmt(this);
     }
 
     public String getIdentifier() {

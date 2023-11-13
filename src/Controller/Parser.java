@@ -49,6 +49,12 @@ public class Parser {
         throw error(message);
     }
 
+    private Token consume(TokenType type1, TokenType type2, String message){
+        if (check(type1)) return advance();
+        else if (check(type2)) return advance();
+        throw error(message);
+    }
+
     private PIMError error(String message){
         haveParseError = true;
         return new PIMError(message);
@@ -76,7 +82,7 @@ public class Parser {
     }
 
     public Stmt printStmt(){
-        Token identifier = consume(TokenType.IDENTIFIER, "Expect an identifier after print.");
+        Token identifier = consume(TokenType.IDENTIFIER, TokenType.ALL, "Expect an identifier after print.");
         return new PrintStmt(identifier);
     }
 

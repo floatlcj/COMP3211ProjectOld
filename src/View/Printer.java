@@ -17,9 +17,18 @@ public class Printer implements pirVisitor {
     }
 
     public void print(String identifier){
+        if (identifier.equals("*")){
+            printAll();
+            return;
+        }
         PIR pir = PIRs.get(identifier);
         if (pir == null) throw new PIMError("PIR \""+ identifier +"\" does not exist.");
         pir.accept(this);
+    }
+
+    private void printAll(){
+        if (PIRs.isEmpty()) throw new PIMError("No PIR created.");
+        PIRs.forEach((id, pir) -> {pir.accept(this); System.out.println('\n');});
     }
 
     @Override

@@ -24,6 +24,7 @@ public class Scanner {
         keywords.put("help", TokenType.HELP);
         keywords.put("exit", TokenType.EXIT);
         keywords.put("print", TokenType.PRINT);
+        keywords.put("*", TokenType.ALL);
         keywords.put("Note", TokenType.NOTE);
         keywords.put("Task", TokenType.TASK);
         keywords.put("Schedule", TokenType.SCHEDULE);
@@ -111,6 +112,9 @@ public class Scanner {
     private void scanToken(){
         char c = advance();
         switch (c){
+            case '*':
+                addToken(TokenType.ALL);
+                break;
             case '=':
                 addToken(TokenType.EQUAL);
                 break;

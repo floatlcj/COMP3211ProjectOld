@@ -5,7 +5,7 @@ public enum TokenType {
     CREATE, MODIFY, SEARCH, LOAD, SAVE, DELETE, HELP, EXIT, PRINT,
     NOTE, TASK, SCHEDULE, CONTACT,
     /*Literals*/
-    IDENTIFIER, STRING, DATE,
+    IDENTIFIER, ALL, DATE,
     /*Compare Operators*/
     BEFORE, AFTER, EQUAL,
     /*Logic Operators*/

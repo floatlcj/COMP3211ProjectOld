@@ -5,10 +5,13 @@ import View.Printer;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 
 public class Interpreter implements Visitor {
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
     private HashMap<String, PIR> PIRs = new HashMap<>();
     public Interpreter(){
     }
@@ -41,6 +44,8 @@ public class Interpreter implements Visitor {
                     createTask(identifier);
                 }catch (IOException e){
                     throw new RuntimeException(e);
+                }catch (DateTimeParseException e){
+                    throw new PIMError("Invalid datetime format. (yyyy-MM-dd,HH:mm)");
                 }
                 break;
             case SCHEDULE:
@@ -48,6 +53,8 @@ public class Interpreter implements Visitor {
                     createSchedule(identifier);
                 }catch (IOException e){
                     throw new RuntimeException(e);
+                }catch (DateTimeParseException e){
+                    throw new PIMError("Invalid datetime format. (yyyy-MM-dd,HH:mm)");
                 }
                 break;
             default:
@@ -115,16 +122,12 @@ public class Interpreter implements Visitor {
         fileOutputStream.close();
     }
 
-    private void createSchedule(String identifier)throws IOException{
-        String description = readLine("Description: ", true);
+    private void createSchedule(String identifier)throws IOException, DateTimeParseException {
+        String description = readLine("Description: ", false);
         String startTimeStr = readLine("Start time: ", false);
-        Scanner scanner = new Scanner(startTimeStr);
-        List<Token> tokens = scanner.scanTokens();
-        LocalDateTime startTime = (LocalDateTime) tokens.get(0).literal;
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
         String alarmTimeStr = readLine("Alarm time: ", false);
-        scanner = new Scanner(alarmTimeStr);
-        tokens = scanner.scanTokens();
-        LocalDateTime alarmTime = (LocalDateTime) tokens.get(0).literal;
+        LocalDateTime alarmTime = LocalDateTime.parse(alarmTimeStr, formatter);
         Schedule schedule = new Schedule(identifier, description, startTime, alarmTime);
         PIRs.put(identifier, schedule);
     }
@@ -135,12 +138,10 @@ public class Interpreter implements Visitor {
         PIRs.put(identifier, note);
     }
 
-    private void createTask(String identifier)throws IOException{
+    private void createTask(String identifier)throws IOException, DateTimeParseException{
         String description = readLine("Description: ", true);
         String deadlineStr = readLine("Deadline: ", false);
-        Scanner scanner = new Scanner(deadlineStr);
-        List<Token> tokens = scanner.scanTokens();
-        LocalDateTime deadline = (LocalDateTime) tokens.get(0).literal;
+        LocalDateTime deadline = LocalDateTime.parse(deadlineStr, formatter);
         Task task = new Task(identifier, description, deadline);
         PIRs.put(identifier, task);
 

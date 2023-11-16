@@ -31,10 +31,10 @@ public class Modifier implements ModifyVisitor{
     public Void visitNote(Note note) {
         try {
             boolean modify = true;
+            System.out.println("1. Identifier\n" +
+                    "2. Text\n" +
+                    "0. Exit modify");
             while (modify){
-                System.out.println("1. Identifier\n" +
-                        "2. Text\n" +
-                        "0. Exit modify");
                 String op = readLine("Choice: ", false);
                 switch (op) {
                     case "1":
@@ -60,11 +60,11 @@ public class Modifier implements ModifyVisitor{
     public Void visitTask(Task task) {
         try {
             boolean modify = true;
+            System.out.println("1. Identifier\n" +
+                    "2. Description\n" +
+                    "3. Deadline\n" +
+                    "0. Exit modify");
             while (modify){
-                System.out.println("1. Identifier\n" +
-                        "2. Description\n" +
-                        "3. Deadline\n" +
-                        "0. Exit modify");
                 String op = readLine("Choice: ", false);
                 switch (op) {
                     case "1":
@@ -99,12 +99,12 @@ public class Modifier implements ModifyVisitor{
     public Void visitSchedule(Schedule schedule) {
         try {
             boolean modify = true;
+            System.out.println("1. Identifier\n" +
+                    "2. Description\n" +
+                    "3. Start time\n" +
+                    "4. Alarm time\n" +
+                    "0. Exit modify");
             while (modify){
-                System.out.println("1. Identifier\n" +
-                        "2. Description\n" +
-                        "3. Start time\n" +
-                        "4. Alarm time\n" +
-                        "0. Exit modify");
                 String op = readLine("Choice: ", false);
                 switch (op) {
                     case "1":
@@ -148,11 +148,11 @@ public class Modifier implements ModifyVisitor{
     public Void visitContact(Contact contact) {
         try {
             boolean modify = true;
+            System.out.println("1. Identifier\n" +
+                    "2. Name\n" +
+                    "3. Address\n" +
+                    "4. Mobile Number");
             while (modify){
-                System.out.println("1. Identifier\n" +
-                        "2. Name\n" +
-                        "3. Address\n" +
-                        "4. Mobile Number");
                 String op = readLine("Choice: ", false);
                 switch (op) {
                     case "1":

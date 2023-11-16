@@ -39,3 +39,13 @@ A query example: search >2023-11-15,10:00 && Task && "text"
 
 ### exit  
 Exit the program.
+## Compile
+root is src
+
+```zsh
+javac -d ../target -sourcepath . PIM.java View/Printer.java Controller/*.java Model/*.java
+```
+## Run
+```zsh
+java ../target/PIM
+```

@@ -7,4 +7,6 @@ public interface StmtVisitor<T>{
     T visitSaveStmt(SaveStmt stmt);
     T visitLoadStmt(LoadStmt stmt);
     T visitModifyStmt(ModifyStmt stmt);
+    T visitSearchStmt(SearchStmt stmt);
+    T visitDeleteStmt(DeleteStmt stmt);
 }

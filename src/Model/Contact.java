@@ -50,6 +50,11 @@ public class Contact extends PIR implements Serializable {
     }
 
     @Override
+    public String getString() {
+        return name + " " + address + " " + mobile;
+    }
+
+    @Override
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }

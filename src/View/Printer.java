@@ -5,9 +5,11 @@ import Model.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Printer implements PrintVisitor {
+public class Printer implements PrintVisitor<Void> {
 
     private static final String FORMAT = "yyyy-MM-dd,HH:mm";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(FORMAT);
@@ -26,9 +28,18 @@ public class Printer implements PrintVisitor {
         pir.accept(this);
     }
 
-    private void printAll(){
+    public void printAll(){
         if (PIRs.isEmpty()) throw new PIMError("No PIR created.");
-        PIRs.forEach((id, pir) -> {pir.accept(this); System.out.println('\n');});
+        List<PIR> pirList = new ArrayList<>(PIRs.values());
+        if (pirList.size() == 0){
+            pirList.get(0).accept(this);
+            return;
+        }
+        for (PIR pir :pirList){
+            pir.accept(this);
+            System.out.println("---------------------------------------------------------");
+        }
+//        PIRs.forEach((id, pir) -> {pir.accept(this); System.out.println('\n');});
     }
 
     @Override

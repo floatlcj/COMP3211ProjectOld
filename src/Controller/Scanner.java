@@ -11,7 +11,6 @@ public class Scanner {
     private final String source;
     private int start = 0;
     private int current = 0;
-    private boolean haveError = false;
     private final List<Token> tokens = new ArrayList<>();
     private static final Map<String, TokenType> keywords = new HashMap<>();
     static {
@@ -109,6 +108,16 @@ public class Scanner {
         addToken(TokenType.DATE);
     }
 
+    private void string(){
+        while (peek() != '"' && !isAtEnd())
+            advance();
+        if (isAtEnd())
+            throw new PIMError("Unterminated string.");
+        advance();
+        String string = source.substring(start + 1, current - 1);
+        addToken(TokenType.STRING, string);
+    }
+
     private void scanToken(){
         char c = advance();
         switch (c){
@@ -140,6 +149,9 @@ public class Scanner {
             case '\r':
             case '\t':
                 break;
+            case '"':
+                string();
+                break;
             default:
                 if (isDate(c))
                     try {
@@ -150,14 +162,10 @@ public class Scanner {
                 else if (isAlpha(c))
                     identifier();
                 else{
-                    haveError = true;
                     throw new PIMError("Unexpected Character");
                 }
         }
     }
 
-    public boolean isHaveError(){
-        return haveError;
-    }
 
 }

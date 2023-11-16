@@ -3,8 +3,10 @@ package Model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Task extends PIR implements Serializable {
+public class Task extends PIR implements Serializable, HasTime {
     private String identifier;
     private String description;
     private LocalDateTime deadline;
@@ -32,6 +34,18 @@ public class Task extends PIR implements Serializable {
 
     @Override
     public void setIdentifier(String identifier){this.identifier = identifier;}
+
+    @Override
+    public String getString() {
+        return description;
+    }
+
+    @Override
+    public List<LocalDateTime> getTime() {
+        List<LocalDateTime> result = new ArrayList<>();
+        result.add(deadline);
+        return result;
+    }
 
     public String getDescription() {
         return description;

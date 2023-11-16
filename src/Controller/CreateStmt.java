@@ -1,19 +1,20 @@
 package Controller;
 
 public class CreateStmt extends Stmt{
-    private String identifier;
-    private Token dataType;
-    public CreateStmt(Token dataType, Token name){
-        this.identifier = name.lexeme;
+    private final Token identifier;
+    private final Token dataType;
+    public CreateStmt(Token dataType, Token identifier){
+        this.identifier = identifier;
         this.dataType = dataType;
     }
+
     @Override
     public <T> T accept(StmtVisitor<T> stmtVisitor) {
         return stmtVisitor.visitCreateStmt(this);
     }
 
     public String getIdentifier() {
-        return identifier;
+        return identifier.lexeme;
     }
 
     public Token getDataType() {

@@ -39,6 +39,11 @@ public class Note extends PIR implements Serializable {
         return visitor.visitNote(this);
     }
 
+    @Override
+    public String getString() {
+        return text;
+    }
+
     public String toString(){
         String noteStr = identifier + "\n" + text;
         return noteStr;

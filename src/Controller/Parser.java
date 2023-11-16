@@ -1,12 +1,16 @@
 package Controller;
 
+import Model.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class Parser {
-    private static class ParseError extends RuntimeException{}
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
     private final List<Token> tokens;
     private int current = 0;
-    private boolean haveParseError = false;
 
     public Parser(List<Token> tokens){
         this.tokens = tokens;
@@ -56,7 +60,6 @@ public class Parser {
     }
 
     private PIMError error(String message){
-        haveParseError = true;
         return new PIMError(message);
     }
 
@@ -67,15 +70,86 @@ public class Parser {
         if (match(TokenType.SAVE)) return saveStmt();
         if (match(TokenType.LOAD)) return loadStmt();
         if (match(TokenType.MODIFY)) return modifyStmt();
-        throw error("Commands: create\n" +
-                "          print\n" +
-                "          exit\n" +
-                "          save\n" +
-                "          load");
+        if (match(TokenType.SEARCH)) return searchStmt();
+        if (match(TokenType.DELETE)) return deleteStmt();
+        throw error("""
+                Commands: create
+                          print
+                          exit
+                          save
+                          load
+                          modify""");
+    }
+
+    private Criteria search(){
+        Criteria criteria = null;
+        while (!isAtEnd())
+            criteria = or();
+        return criteria;
+    }
+    private Criteria or(){
+        Criteria criteria = and();
+        while (match(TokenType.OR)){
+            Criteria right = and();
+            criteria = new OrCriteria(criteria, right);
+        }
+        return criteria;
+    }
+    private Criteria and(){
+        Criteria criteria = neg();
+        while (match(TokenType.AND)){
+            Criteria right = neg();
+            criteria = new AndCriteria(criteria, right);
+        }
+        return criteria;
+    }
+
+    private Criteria neg(){
+        if (match(TokenType.NEG)){
+            Criteria right = neg();
+            return new NegCriteria(right);
+        }
+        return primary();
+    }
+
+    private Criteria primary(){
+        if (match(TokenType.NOTE, TokenType.SCHEDULE, TokenType.TASK, TokenType.CONTACT)){
+            Token type = previous();
+            return new TypeCriteria(type);
+        }else if (match(TokenType.IDENTIFIER)){
+            Token id = previous();
+            return new IdCriteria(id.lexeme);
+        }else if (match(TokenType.STRING)){
+            Token str = previous();
+            return new StringCriteria((String) str.literal);
+        }else if (match(TokenType.BEFORE, TokenType.AFTER, TokenType.EQUAL)){
+            Token operator = previous();
+            Token dateTimeStr = consume(TokenType.DATE, "Expect a datetime.");
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr.lexeme, formatter);
+                return new TimeCriteria(operator, dateTime);
+            }catch (DateTimeParseException e){
+                throw new PIMError("Invalid datetime format. (yyyy-MM-dd,HH:mm)");
+            }
+        }
+        throw new PIMError("Expect a condition.");
+    }
+
+    private Stmt searchStmt(){
+       Criteria criteria = search();
+       if (criteria == null)
+           throw new PIMError("Expect a condition after search.");
+
+        return new SearchStmt(criteria);
+    }
+
+    private Stmt deleteStmt(){
+        Token identifier = consume(TokenType.IDENTIFIER, "Expect an identifier after delete.");
+        return new DeleteStmt(identifier);
     }
 
     private Stmt modifyStmt(){
-        Token identifier = consume(TokenType.IDENTIFIER, "Expect and identifier after modify.");
+        Token identifier = consume(TokenType.IDENTIFIER, "Expect an identifier after modify.");
         return new ModifyStmt(identifier.lexeme);
     }
 
@@ -87,7 +161,7 @@ public class Parser {
     }
 
     private Stmt crateStmt(){
-        if (match(TokenType.NOTE) || match(TokenType.TASK) || match(TokenType.SCHEDULE) || match(TokenType.CONTACT)){
+        if (match(TokenType.NOTE, TokenType.TASK, TokenType.SCHEDULE, TokenType.CONTACT)){
             Token dataType = previous();
             Token identifier = consume(TokenType.IDENTIFIER, "Expect an identifier for a PIR.");
             return new CreateStmt(dataType, identifier);

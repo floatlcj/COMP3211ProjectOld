@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task extends PIR implements Serializable, HasTime {
-    private String identifier;
     private String description;
     private LocalDateTime deadline;
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
 
     public Task(String identifier, String description, LocalDateTime deadline){
-        this.identifier = identifier;
+        super(identifier);
         this.description = description;
         this.deadline = deadline;
     }
@@ -27,13 +26,6 @@ public class Task extends PIR implements Serializable, HasTime {
         return visitor.visitTask(this);
     }
 
-    @Override
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    @Override
-    public void setIdentifier(String identifier){this.identifier = identifier;}
 
     @Override
     public String getString() {
@@ -63,7 +55,6 @@ public class Task extends PIR implements Serializable, HasTime {
 
     @Override
     public String toString() {
-        String taskStr = identifier + "\n" + description + "\n" + deadline.format(formatter);
-        return taskStr;
+        return super.getIdentifier() + "\n" + description + "\n" + deadline.format(formatter);
     }
 }

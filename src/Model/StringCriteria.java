@@ -1,6 +1,6 @@
 package Model;
 
-public class StringCriteria extends Criteria{
+public class StringCriteria implements Criteria{
     private final String query;
 
     public StringCriteria(String query){

@@ -1,6 +1,5 @@
 package Controller;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,9 +101,6 @@ public class Scanner {
 
     private void date()throws DateTimeParseException {
         while(isDate(peek())) advance();
-//        String dateStr = source.substring(start, current);
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
-//        LocalDateTime date = LocalDateTime.parse(dateStr, formatter);
         addToken(TokenType.DATE);
     }
 

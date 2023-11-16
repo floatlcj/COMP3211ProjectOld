@@ -13,7 +13,7 @@ public class Printer implements PrintVisitor<Void> {
 
     private static final String FORMAT = "yyyy-MM-dd,HH:mm";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(FORMAT);
-    private HashMap<String, PIR>  PIRs;
+    private final HashMap<String, PIR>  PIRs;
     public Printer(HashMap<String, PIR> PIRs){
         this.PIRs = PIRs;
     }
@@ -31,7 +31,7 @@ public class Printer implements PrintVisitor<Void> {
     public void printAll(){
         if (PIRs.isEmpty()) throw new PIMError("No PIR created.");
         List<PIR> pirList = new ArrayList<>(PIRs.values());
-        if (pirList.size() == 0){
+        if (pirList.isEmpty()){
             pirList.get(0).accept(this);
             return;
         }

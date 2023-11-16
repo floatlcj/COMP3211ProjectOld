@@ -1,6 +1,6 @@
 package Controller;
 
-public class DeleteStmt extends Stmt{
+public class DeleteStmt implements Stmt{
     private final Token identifier;
     public DeleteStmt(Token identifier){
         this.identifier = identifier;

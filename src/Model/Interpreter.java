@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class Interpreter implements StmtVisitor<Void>, CriteriaVisitor<List<PIR>> {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
     private HashMap<String, PIR> PIRs = new HashMap<>();
+    private final int STATUS = 64;
     public Interpreter(){
     }
     public void interpret(Stmt stmt){
@@ -225,7 +227,7 @@ public class Interpreter implements StmtVisitor<Void>, CriteriaVisitor<List<PIR>
 
     @Override
     public Void visitPrintStmt(PrintStmt stmt) {
-        String identifier = stmt.identifier.lexeme;
+        String identifier = stmt.getIdentifier().lexeme;
         Printer printer = new Printer(PIRs);
         printer.print(identifier);
         return null;
@@ -233,7 +235,7 @@ public class Interpreter implements StmtVisitor<Void>, CriteriaVisitor<List<PIR>
 
     @Override
     public Void visitExitStmt(ExitStmt stmt) {
-        System.exit(64);
+        System.exit(STATUS);
         return null;
     }
 
@@ -325,7 +327,6 @@ public class Interpreter implements StmtVisitor<Void>, CriteriaVisitor<List<PIR>
         if (newLine)
             System.out.println(message);
         else System.out.print(message);
-        String res = reader.readLine();
-        return res;
+        return reader.readLine();
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class PIM {
-    static boolean haveError = false;
+    private static boolean haveError = false;
     private static final Interpreter interpreter = new Interpreter();
     public static void main(String[] args){
         try {
@@ -42,17 +42,9 @@ public class PIM {
             Stmt stmt = parser.parse();
             interpreter.interpret(stmt);
 
-//            for (Token token: tokens)
-//                System.out.println(token);
         }catch (PIMError error){
             haveError = false;
         }
 
     }
-
-    public static void error(String message){
-        haveError = true;
-        System.out.println(message);
-    }
-
 }

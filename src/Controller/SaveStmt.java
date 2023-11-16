@@ -1,6 +1,6 @@
 package Controller;
 
-public class SaveStmt extends Stmt{
+public class SaveStmt implements Stmt{
     public SaveStmt(){}
 
     @Override

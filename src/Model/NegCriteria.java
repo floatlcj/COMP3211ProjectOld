@@ -1,8 +1,7 @@
 package Model;
 
-import java.util.List;
 
-public class NegCriteria extends Criteria{
+public class NegCriteria implements Criteria{
     private final Criteria right;
 
     public NegCriteria(Criteria right){
@@ -18,13 +17,4 @@ public class NegCriteria extends Criteria{
         return visitor.visitNegCriteria(this);
     }
 
-//    @Override
-//    public List<PIR> notMeetCriteria(List<PIR> pirList) {
-//        return right.meetCriteria();
-//    }
-//
-//    @Override
-//    public List<PIR> meetCriteria(List<PIR> pirList) {
-//        return null;
-//    }
 }

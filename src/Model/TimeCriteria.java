@@ -4,7 +4,7 @@ import Controller.Token;
 
 import java.time.LocalDateTime;
 
-public class TimeCriteria extends Criteria{
+public class TimeCriteria implements Criteria{
     private final Token operator;
     private final LocalDateTime dateTime;
 

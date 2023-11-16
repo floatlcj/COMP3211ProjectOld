@@ -14,11 +14,11 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 
-public class Modifier implements ModifyVisitor{
+public class Modifier implements ModifyVisitor<Void>{
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
 
-    private HashMap<String, PIR> PIRs;
+    private final HashMap<String, PIR> PIRs;
     public Modifier(HashMap<String, PIR> PIRs){
         this.PIRs = PIRs;
     }
@@ -186,8 +186,7 @@ public class Modifier implements ModifyVisitor{
         if (newLine)
             System.out.println(message);
         else System.out.print(message);
-        String res = reader.readLine();
-        return res;
+        return reader.readLine();
     }
 
     private void updatePIR(String initialId, PIR pir){
@@ -211,7 +210,6 @@ public class Modifier implements ModifyVisitor{
 
     private LocalDateTime readDateTime(String message) throws IOException, DateTimeParseException{
         String dateTimeStr = readLine(message, false);
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
-        return dateTime;
+        return LocalDateTime.parse(dateTimeStr, formatter);
     }
 }

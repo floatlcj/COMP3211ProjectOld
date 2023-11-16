@@ -1,6 +1,6 @@
 package Model;
 
-public class AndCriteria extends Criteria{
+public class AndCriteria implements Criteria{
     private final Criteria left;
     private final Criteria right;
     public AndCriteria(Criteria left, Criteria right){

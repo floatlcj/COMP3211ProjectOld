@@ -1,25 +1,56 @@
 package Model;
 
+import Controller.PIMError;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 public class Schedule extends PIR implements Serializable, HasTime {
-    private String identifier;
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime alarmTime;
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm");
+    private static final Timer timer = new Timer();
+
+    private final static String FORMAT = "yyyy-MM-dd,HH:mm";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT);
+    private static final DateFormat dateFormatter = new SimpleDateFormat(FORMAT);
 
     public Schedule(String identifier, String description, LocalDateTime startTime, LocalDateTime alarmTime){
-        this.identifier = identifier;
+        super(identifier);
         this.description = description;
         this.startTime = startTime;
         this.alarmTime = alarmTime;
+        checkTime();
+        setTimer();
+    }
 
+    public void setTimer(){
+        Alarm alarm = new Alarm("\nAlarm!\nSchedule: " + super.getIdentifier() +"\nDescription: " + description +
+                "\nStart time: " + startTime.format(formatter) + "\n(PIM) ");
+        try {
+            Date date = dateFormatter.parse(alarmTime.format(formatter));
+            timer.schedule(alarm, date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void checkTime(){
+        if (alarmTime.isBefore(LocalDateTime.now()))
+            throw new PIMError("Alarm time cannot be before current time.");
+        if (alarmTime.isAfter(startTime))
+            throw new PIMError("Alarm time cannot be after start time.");
     }
 
     @Override
@@ -33,14 +64,6 @@ public class Schedule extends PIR implements Serializable, HasTime {
     }
 
     @Override
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    @Override
-    public void setIdentifier(String identifier){this.identifier = identifier;}
-
-    @Override
     public String getString() {
         return description;
     }
@@ -51,6 +74,12 @@ public class Schedule extends PIR implements Serializable, HasTime {
         result.add(startTime);
         result.add(alarmTime);
         return result;
+    }
+
+    @Serial
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        this.setTimer();
     }
 
     public String getDescription() {
@@ -67,6 +96,7 @@ public class Schedule extends PIR implements Serializable, HasTime {
 
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
+        checkTime();
     }
 
     public LocalDateTime getAlarmTime() {
@@ -75,12 +105,14 @@ public class Schedule extends PIR implements Serializable, HasTime {
 
     public void setAlarmTime(LocalDateTime alarmTime) {
         this.alarmTime = alarmTime;
+        checkTime();
+        timer.cancel();
+        setTimer();
     }
 
     @Override
     public String toString() {
-        String scheduleStr = identifier + "\n" + description + "\n" + startTime.format(formatter) + "\n"
+        return super.getIdentifier() + "\n" + description + "\n" + startTime.format(formatter) + "\n"
                 + alarmTime.format(formatter);
-        return scheduleStr;
     }
 }

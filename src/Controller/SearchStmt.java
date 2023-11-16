@@ -2,7 +2,7 @@ package Controller;
 
 import Model.Criteria;
 
-public class SearchStmt extends Stmt{
+public class SearchStmt implements Stmt{
     private final Criteria criteria;
     public SearchStmt(Criteria criteria){
         this.criteria = criteria;

@@ -1,7 +1,7 @@
 package Controller;
 
-public class ModifyStmt extends Stmt{
-    private String identifier;
+public class ModifyStmt implements Stmt{
+    private final String identifier;
 
     public ModifyStmt(String identifier){
         this.identifier = identifier;

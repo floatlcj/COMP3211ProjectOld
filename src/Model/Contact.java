@@ -3,15 +3,14 @@ package Model;
 import java.io.Serializable;
 
 public class Contact extends PIR implements Serializable {
-    private String identifier;
     private String name;
     private String address;
     private String mobile;
     public Contact(String identifier, String name, String address, String mobile){
+        super(identifier);
         this.address = address;
         this.name = name;
         this.mobile = mobile;
-        this.identifier = identifier;
     }
     @Override
     public <T> T accept(PrintVisitor<T> visitor) {
@@ -23,10 +22,6 @@ public class Contact extends PIR implements Serializable {
         return visitor.visitContact(this);
     }
 
-    @Override
-    public String getIdentifier(){
-        return identifier;
-    }
 
     public String getName() {
         return name;
@@ -54,10 +49,6 @@ public class Contact extends PIR implements Serializable {
         return name + " " + address + " " + mobile;
     }
 
-    @Override
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
@@ -65,7 +56,6 @@ public class Contact extends PIR implements Serializable {
 
     @Override
     public String toString() {
-        String contactStr = identifier + "\n" + name + "\n" + address + "\n" + mobile;
-        return contactStr;
+        return super.getIdentifier() + "\n" + name + "\n" + address + "\n" + mobile;
     }
 }

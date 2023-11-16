@@ -1,6 +1,6 @@
 package Controller;
 
-public class CreateStmt extends Stmt{
+public class CreateStmt implements Stmt{
     private final Token identifier;
     private final Token dataType;
     public CreateStmt(Token dataType, Token identifier){

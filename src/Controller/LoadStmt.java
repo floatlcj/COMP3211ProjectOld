@@ -1,6 +1,6 @@
 package Controller;
 
-public class LoadStmt extends Stmt{
+public class LoadStmt implements Stmt{
     public LoadStmt(){}
 
     @Override

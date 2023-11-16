@@ -1,6 +1,6 @@
 package Model;
 
-public class OrCriteria extends Criteria{
+public class OrCriteria implements Criteria{
     private final Criteria left;
     private final Criteria right;
     public OrCriteria(Criteria left, Criteria right){

@@ -43,9 +43,9 @@ Exit the program.
 root is src
 
 ```zsh
-javac -d ../target -sourcepath . PIM.java View/Printer.java Controller/*.java Model/*.java
+javac -d ../target -sourcepath . java.hk.edu.polyu.comp.comp3211.group6.PIM.java View/Printer.java Controller/*.java Model/*.java
 ```
 ## Run
 ```zsh
-java ../target/PIM
+java ../target/java.hk.edu.polyu.comp.comp3211.group6.PIM
 ```
